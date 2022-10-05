@@ -50,3 +50,4 @@ workflows:
   build:
     jobs:
       - composer_validate
+      - static_analysis

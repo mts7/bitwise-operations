@@ -42,7 +42,7 @@ jobs:
       - install_composer_packages
       - run:
           name: PHPStan
-          command: vendor/bin/phpstan analyze --memory-limit=-1
+          command: vendor/bin/phpstan analyze --memory-limit=-1 --configuration phpstan.neon src/ tests/
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows

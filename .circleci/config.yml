@@ -2,25 +2,51 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+commands:
+  install_composer:
+    steps:
+      - php/install-composer
+
+  install_composer_packages:
+    parameters:
+      executor:
+        type: executor
+    steps:
+      - php/install-packages:
+          install-flags: --no-interaction --prefer-dist
+          cache-key: composer.json
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
+  composer_validate:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      - image: cimg/base:stable
+      - image: cimg/php:8.1
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
+      - install_composer
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: Validate composer file
+          command: composer validate --no-interaction --ansi
+  static_analysis:
+    docker:
+      - image: cimg/php:8.1
+    steps:
+      - checkout
+      - install_composer
+      - install_composer_packages
+      - run:
+          name: PHPStan
+          command: vendor/bin/phpstan analyze --memory-limit=-1
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  build:
     jobs:
-      - say-hello
+      - composer_validate
+      - static_analysis

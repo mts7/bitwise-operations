@@ -14,7 +14,6 @@ commands:
     steps:
       - php/install-packages:
           install-flags: --no-interaction --prefer-dist
-          cache-key: composer.json
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs

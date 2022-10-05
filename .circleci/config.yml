@@ -11,9 +11,6 @@ commands:
       - php/install-composer
 
   install_composer_packages:
-    parameters:
-      executor:
-        type: executor
     steps:
       - php/install-packages:
           install-flags: --no-interaction --prefer-dist

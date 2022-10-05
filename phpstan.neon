@@ -1,0 +1,10 @@
+parameters:
+    level: 9
+    paths:
+        - ./src
+        - ./tests
+    ignoreErrors:
+        -
+            message: "#^Method BitOps\\\\Permissions\\:\\:getConstants\\(\\) should return array\\<string, int\\> but returns array\\<string, mixed\\>\\.$#"
+            count: 1
+            path: src/Permissions.php

@@ -41,6 +41,14 @@ trait ClassConstants
             return false;
         }
 
-        return ($status & $status - 1) === 0;
+        return self::isPowerOfTwo($status);
+    }
+
+    /**
+     * Checks if the provided integer is a power of two.
+     */
+    final public static function isPowerOfTwo(int $value): bool
+    {
+        return ($value & $value - 1) === 0;
     }
 }

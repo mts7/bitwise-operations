@@ -94,11 +94,7 @@
                 logoutput="true"
                 passthru="true"
                 checkreturn="true"
-        >
-            <arg value="--output-format=xml"/>
-            <arg value=">"/>
-            <arg value="reports/psalm.xml"/>
-        </exec>
+        />
     </target>
 
     <target name="phpmd">

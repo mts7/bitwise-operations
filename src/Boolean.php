@@ -38,4 +38,20 @@ class Boolean
 
         return (bool) $result;
     }
+
+    /**
+     * Checks if the provided integer is odd.
+     */
+    public static function isOdd(int $value): bool
+    {
+        return ($value & 1) === 1;
+    }
+
+    /**
+     * Checks if the provided integer is even.
+     */
+    public static function isEven(int $value): bool
+    {
+        return ($value & 1) === 0;
+    }
 }

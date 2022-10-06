@@ -2,6 +2,11 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+executors:
+  php-81:
+    docker:
+      - image: cimg/php:8.1
+
 orbs:
   php: circleci/php@1.1.0
 
@@ -21,10 +26,7 @@ commands:
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   composer_validate:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/php:8.1
+    executor: php-81
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
@@ -34,8 +36,8 @@ jobs:
           name: Validate composer file
           command: composer validate --no-interaction --ansi
   static_analysis:
-    docker:
-      - image: cimg/php:8.1
+    executor: php-81
+    parallelism: 3
     steps:
       - checkout
       - install_composer
@@ -43,6 +45,21 @@ jobs:
       - run:
           name: PHPStan
           command: vendor/bin/phpstan analyze --memory-limit=-1 --configuration phpstan.neon src/ tests/
+      - run:
+          name: Psalm
+          command: vendor/bin/psalm
+      - run:
+          name: PHP Mess Detector
+          command: vendor/bin/phpmd src,tests text phpmd.xml
+  unit_test:
+    executor: php-81
+    steps:
+      - checkout
+      - install_composer
+      - install_composer_packages
+      - run:
+          name: Unit Tests
+          command: vendor/bin/phpunit
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -51,3 +68,4 @@ workflows:
     jobs:
       - composer_validate
       - static_analysis
+      - unit_test

@@ -86,6 +86,13 @@ workflows:
   build:
     jobs:
       - composer_validate
-      - static_analysis
-      - security
-      - unit_test
+      - static_analysis:
+          requires:
+            - composer_validate
+      - unit_test:
+          requires:
+            - composer_validate
+      - security:
+          requires:
+            - static_analysis
+            - unit_test

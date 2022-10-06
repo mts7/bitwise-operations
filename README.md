@@ -1,9 +1,12 @@
 # Bitwise Operations
 
 [![Build Status](https://circleci.com/gh/mts7/bitwise-operations/tree/master.svg?style=shield)](https://circleci.com/gh/mts7/bitwise-operations)
+![PHPStan](https://img.shields.io/badge/style-level%209-brightgreen.svg?&label=phpstan)
 
 Bitwise Operations provides examples of how to use bitwise operators in 
 real-world scenarios.
+
+## Flag Storage Example
 
 One example is of a User with Permissions. Each permission is stored as a class
 constant with a value that is a multiple of 2. Since bits are binary, their 
@@ -24,8 +27,12 @@ $user = new User();
 $user->addPermission(Permissions::ACTIVE);
 // permissions should now be 00001
 // set three other permissions
-$user->addPermission(Permissions::CREATE | Permissions::VIEW | Permissions::UPDATE);
-// permissions should now be 01111 because of turning on the bits for these others
+$user->addPermission(
+    Permissions::CREATE
+    | Permissions::VIEW
+    | Permissions::UPDATE
+);
+// permissions should now be 01111 because of turning on these bits
 
 // check permission can compare with any of the permissions available
 if ($user->checkPermission(Permissions::DELETE)) {
@@ -41,3 +48,30 @@ $allPermissions = $user->getPermissions();
 print_r($allPermissions);
 ```
 
+## Boolean Loops
+
+Sometimes we want to find out when a method call returns a boolean, but in a
+loop. Two of the approaches to this using bitwise operators would be checking if
+any of the results are `true` and checking if all of the results are `true`. In
+some situations, throwing an exception, breaking, or returning early would be
+good to do if any result was `false`, which would then follow the second
+approach.
+
+This example shows how to use the `BitOps\Boolean` class for determining true
+values.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+namespace BitOps;
+
+$methodResults = [
+    true,
+    false,
+];
+
+$true = Boolean::isAtLeastOneTrue($methodResults);
+$false = Boolean::areAllTrue($methodResults);
+```

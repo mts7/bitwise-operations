@@ -25,9 +25,11 @@ class Permissions
      * values.
      *
      * @return array<string, int>
+     *
+     * @psalm-suppress MixedReturnTypeCoercion
      */
     public static function getConstants(): array
     {
-        return (new ReflectionClass(__CLASS__))->getConstants(ReflectionClassConstant::IS_PUBLIC);
+        return (new ReflectionClass(self::class))->getConstants(ReflectionClassConstant::IS_PUBLIC);
     }
 }

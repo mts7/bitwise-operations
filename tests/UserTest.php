@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BitOps\Tests;
 
 use BitOps\Permissions;
@@ -8,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Unit test for User accessing Permissions
+ * @psalm-suppress PropertyNotSetInConstructor
+ * @psalm-suppress UnusedClass
+ * @psalm-suppress MissingThrowsDocblock
  */
 class UserTest extends TestCase
 {
@@ -71,7 +76,11 @@ class UserTest extends TestCase
         $this->fixture->removePermission($removePermission);
         $userPermission = $this->fixture->getPermission();
 
-        self::assertSame($permissions - $removePermission, $userPermission, 'User permission was not removed.');
+        self::assertSame(
+            $permissions - $removePermission,
+            $userPermission,
+            'User permission was not removed.'
+        );
     }
 
     public function testCheckPermissionSingle(): void
@@ -108,7 +117,11 @@ class UserTest extends TestCase
 
     public function testGetPermissionsAll(): void
     {
-        $permissions = Permissions::ACTIVE | Permissions::VIEW | Permissions::CREATE | Permissions::UPDATE | Permissions::DELETE;
+        $permissions = Permissions::ACTIVE
+            | Permissions::CREATE
+            | Permissions::VIEW
+            | Permissions::UPDATE
+            | Permissions::DELETE;
         $expected = [
             'Active',
             'Create',

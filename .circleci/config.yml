@@ -47,10 +47,19 @@ jobs:
           command: vendor/bin/phpstan analyze --memory-limit=-1 --configuration phpstan.neon src/ tests/
       - run:
           name: Psalm
-          command: vendor/bin/psalm
+          command: vendor/bin/psalm --output-format=xml > ~/reports/psalm.xml
       - run:
           name: PHP Mess Detector
-          command: vendor/bin/phpmd src,tests text phpmd.xml
+          command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile ~/reports/phpmd.html
+  security:
+    executor: php-81
+    steps:
+      - checkout
+      - install_composer
+      - install_composer_packages
+      - run:
+          name: Psalm Security Analysis
+          command: vendor/bin/psalm --taint-analysis --report=~/reports/psalm-security.sarif
   unit_test:
     executor: php-81
     steps:

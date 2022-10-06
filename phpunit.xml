@@ -34,12 +34,6 @@
         </include>
     </coverage>
 
-    <groups>
-        <exclude>
-            <group>disabled</group>
-        </exclude>
-    </groups>
-
     <php>
         <ini name="memory_limit" value="-1" />
         <ini name="error_reporting" value="-1" />

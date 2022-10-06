@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Bitwise Operations" default="check">
+    <target name="check" depends="
+        composer-validate,
+        cs-fix,
+        cs,
+        test-configuration-validate,
+        test,
+        phpstan,
+        psalm,
+        phpmd,
+        psalm-security
+    "/>
+
+    <target name="composer-validate">
+        <exec
+                executable="composer"
+                logoutput="true"
+                passthru="true"
+                checkreturn="true"
+        >
+            <arg value="validate"/>
+            <arg value="--ansi"/>
+        </exec>
+    </target>
+
+    <target name="composer-install">
+        <exec
+                executable="composer"
+                logoutput="true"
+                passthru="true"
+                checkreturn="true"
+        >
+            <arg value="install"/>
+            <arg value="--ansi"/>
+        </exec>
+    </target>
+
+    <target name="cs">
+        <exec
+                executable="vendor/bin/phpcs"
+                logoutput="true"
+                passthru="true"
+                checkreturn="true"
+        />
+    </target>
+
+    <target name="cs-fix">
+        <exec
+                executable="vendor/bin/phpcbf"
+                logoutput="true"
+                passthru="true"
+                checkreturn="true"
+        />
+    </target>
+
+    <target name="test-configuration-validate" depends="composer-install">
+        <xmllint schema="vendor/phpunit/phpunit/phpunit.xsd" file="phpunit.xml"/>
+    </target>
+
+    <target name="test">
+        <exec
+                executable="phpdbg"
+                logoutput="true"
+                passthru="true"
+                checkreturn="true"
+        >
+            <arg value="-qrr"/>
+            <arg value="vendor/bin/phpunit"/>
+            <arg value="--coverage-html"/>
+            <arg value="reports/code-coverage"/>
+        </exec>
+    </target>
+
+    <target name="phpstan">
+        <exec
+                executable="vendor/bin/phpstan"
+                logoutput="true"
+                passthru="true"
+                checkreturn="true"
+        >
+            <arg value="analyse"/>
+            <arg value="--memory-limit=-1"/>
+        </exec>
+    </target>
+
+    <target name="psalm">
+        <exec
+                executable="vendor/bin/psalm"
+                logoutput="true"
+                passthru="true"
+                checkreturn="true"
+        >
+            <arg value="--output-format=xml"/>
+            <arg value=">"/>
+            <arg value="reports/psalm.xml"/>
+        </exec>
+    </target>
+
+    <target name="phpmd">
+        <exec
+                executable="vendor/bin/phpmd"
+                logoutput="true"
+                passthru="true"
+                checkreturn="true"
+        >
+            <arg value="src,tests"/>
+            <arg value="ansi"/>
+            <arg value="phpmd.xml"/>
+        </exec>
+    </target>
+
+    <target name="psalm-security">
+        <exec
+                executable="vendor/bin/psalm"
+                logoutput="true"
+                passthru="true"
+                checkreturn="true"
+        >
+            <arg value="--taint-analysis"/>
+            <arg value="--report=reports/psalm-security.sarif"/>
+        </exec>
+    </target>
+</project>

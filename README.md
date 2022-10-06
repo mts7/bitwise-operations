@@ -1,5 +1,7 @@
 # Bitwise Operations
 
+[![Build Status](https://circleci.com/gh/mts7/bitwise-operations/tree/master.svg?style=shield)](https://circleci.com/gh/mts7/bitwise-operations)
+
 Bitwise Operations provides examples of how to use bitwise operators in 
 real-world scenarios.
 

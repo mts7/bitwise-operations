@@ -17,6 +17,7 @@
         <exclude name="ExcessiveClassLength"/>
         <exclude name="ExcessiveMethodLength"/>
         <exclude name="ExcessiveParameterList"/>
+        <exclude name="TooManyPublicMethods"/>
     </rule>
 
     <rule ref="rulesets/cleancode.xml/StaticAccess">
@@ -24,7 +25,8 @@
             <property name="exceptions">
                 <value>
                     \BitOps\Boolean,
-                    \BitOps\Permissions
+                    \BitOps\Permissions,
+                    \BitOps\UserStatus
                 </value>
             </property>
         </properties>
@@ -51,6 +53,12 @@
     <rule ref="rulesets/codesize.xml/ExcessiveParameterList">
         <properties>
             <property name="minimum" value="5"/>
+        </properties>
+    </rule>
+
+    <rule ref="rulesets/codesize.xml/TooManyPublicMethods">
+        <properties>
+            <property name="maxmethods" value="25"/>
         </properties>
     </rule>
 </ruleset>

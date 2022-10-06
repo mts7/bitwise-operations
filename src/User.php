@@ -15,6 +15,11 @@ class User
     private int $permissions = 0;
 
     /**
+     * @var int Current user status
+     */
+    private int $status = UserStatus::ANONYMOUS;
+
+    /**
      * Adds a permission to the permission manager.
      */
     final public function addPermission(int $permission): void
@@ -58,11 +63,60 @@ class User
     {
         $output = [];
         foreach (Permissions::getConstants() as $name => $value) {
-            $output[] = $this->checkPermission($value) ? ucfirst(strtolower($name)) : '';
+            if ($this->checkPermission($value)) {
+                $output[] = ucfirst(strtolower($name));
+            }
         }
 
-        return array_filter($output, static function ($value) {
-            return !empty($value);
-        });
+        return $output;
+    }
+
+    /**
+     * Gets the current status as an integer.
+     */
+    final public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * Gets the status name of the constant for the current status value.
+     */
+    final public function getStatusName(): string
+    {
+        $constants = UserStatus::getConstants();
+        $flipped = array_flip($constants);
+
+        return $flipped[$this->status];
+    }
+
+    /**
+     * Sets the status to the provided value, if valid.
+     */
+    final public function setStatus(int $status): void
+    {
+        if (!(new UserStatus())->isValidConstant($status)) {
+            $this->status = UserStatus::ANONYMOUS;
+
+            return;
+        }
+
+        $this->status = $status;
+    }
+
+    /**
+     * Increases the user status by one increment.
+     */
+    final public function increaseStatus(): void
+    {
+        $this->status <<= 1;
+    }
+
+    /**
+     * Decreases the user status by one increment.
+     */
+    final public function decreaseStatus(): void
+    {
+        $this->status >>= 1;
     }
 }

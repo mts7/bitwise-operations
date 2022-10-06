@@ -4,7 +4,10 @@
 ![PHPStan](https://img.shields.io/badge/style-level%209-brightgreen.svg?&label=phpstan)
 
 Bitwise Operations provides examples of how to use bitwise operators in 
-real-world scenarios.
+real-world scenarios. The most basic usage examples are included in the `tests`
+directory, while the actual bitwise code is in the `src` directory. The below
+examples use the classes with the bitwise operations rather than display how the
+bitwise operations work.
 
 ## Flag Storage Example
 
@@ -74,4 +77,60 @@ $methodResults = [
 
 $true = Boolean::isAtLeastOneTrue($methodResults);
 $false = Boolean::areAllTrue($methodResults);
+```
+
+## Odd or Even
+
+Checking for even can be done like `($value % 2) === 0`. Another way to do it, as
+`BitOps\Boolean` demonstrates, is with `($value & 1) === 0`. The differences 
+include an operator change as well as an operand change. Since the last bit in a
+number is for `1`, all odd numbers will have the last bit on and all even
+numbers will have the last bit off.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+namespace BitOps;
+
+$value = 6;
+
+$true = Boolean::isEven($value);
+$false = Boolean::isFalse($value);
+```
+
+## Tracking Status
+
+When a user (as an example) exists, it should only have a single status at any
+given time. To track this, we can use a `UserStatus` class to hold all of the 
+necessary status names in their specific order. The user would initially have a
+status of `Anonymous`, then can be changed to a `Repeat Visitor` if the user has
+visited an application multiple times, and then changed to `Registered` after
+signing up. This status progression can be done by shifting the bit to the left.
+Since the user status has only a single value, this allows for quick and easy
+modification of the user status, as handled by the `User` class.
+
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+namespace BitOps;
+
+$user = new User();
+$status = $user->getStatusName();
+echo $status; // ANONYMOUS
+
+$user->increaseStatus();
+$status = $user->getStatusName();
+echo $status; // REPEAT_VISITOR
+
+$user->setStatus(UserStatus::REGULAR);
+$status = $user->getStatusName();
+echo $status; // REGULAR
+
+$user->decreaseStatus();
+$status = $user->getStatusName();
+echo $status; // ACTIVE
 ```

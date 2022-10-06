@@ -6,6 +6,7 @@ namespace BitOps\Tests;
 
 use BitOps\Permissions;
 use BitOps\User;
+use BitOps\UserStatus;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,14 +19,14 @@ class UserTest extends TestCase
 {
     private User $fixture;
 
-    protected function setUp(): void
+    final protected function setUp(): void
     {
         parent::setUp();
 
         $this->fixture = new User();
     }
 
-    public function testAddPermissionSingle(): void
+    final public function testAddPermissionSingle(): void
     {
         $permission = Permissions::ACTIVE;
 
@@ -35,7 +36,7 @@ class UserTest extends TestCase
         self::assertSame($permission, $userPermission, 'The permission was not applied.');
     }
 
-    public function testAddPermissionMultiple(): void
+    final public function testAddPermissionMultiple(): void
     {
         $permission = Permissions::ACTIVE | Permissions::VIEW;
 
@@ -45,7 +46,7 @@ class UserTest extends TestCase
         self::assertSame($permission, $userPermission, 'The permissions were not applied.');
     }
 
-    public function testRemovePermissionSingle(): void
+    final public function testRemovePermissionSingle(): void
     {
         $permission = Permissions::ACTIVE;
         $this->fixture->addPermission($permission);
@@ -56,7 +57,7 @@ class UserTest extends TestCase
         self::assertSame(0, $userPermission, 'User permission is not 0.');
     }
 
-    public function testRemovePermissionMultiple(): void
+    final public function testRemovePermissionMultiple(): void
     {
         $permission = Permissions::ACTIVE | Permissions::VIEW;
         $this->fixture->addPermission($permission);
@@ -67,7 +68,7 @@ class UserTest extends TestCase
         self::assertSame(0, $userPermission, 'User permission is not 0.');
     }
 
-    public function testRemovePermissionOneOfMany(): void
+    final public function testRemovePermissionOneOfMany(): void
     {
         $permissions = Permissions::ACTIVE | Permissions::VIEW | Permissions::CREATE | Permissions::UPDATE;
         $removePermission = Permissions::UPDATE;
@@ -83,7 +84,7 @@ class UserTest extends TestCase
         );
     }
 
-    public function testCheckPermissionSingle(): void
+    final public function testCheckPermissionSingle(): void
     {
         $permission = Permissions::CREATE;
         $this->fixture->addPermission($permission);
@@ -93,7 +94,7 @@ class UserTest extends TestCase
         self::assertTrue($hasPermission, 'The permission does not exist for the user.');
     }
 
-    public function testCheckPermissionMultipleSuccess(): void
+    final public function testCheckPermissionMultipleSuccess(): void
     {
         $permissions = Permissions::ACTIVE | Permissions::CREATE | Permissions::VIEW;
         $checkPermissions = Permissions::ACTIVE | Permissions::CREATE;
@@ -104,7 +105,7 @@ class UserTest extends TestCase
         self::assertTrue($hasPermission, 'The user is not active and does not have permission to create.');
     }
 
-    public function testCheckPermissionMultipleFail(): void
+    final public function testCheckPermissionMultipleFail(): void
     {
         $permissions = Permissions::ACTIVE | Permissions::CREATE | Permissions::VIEW;
         $checkPermissions = Permissions::ACTIVE | Permissions::DELETE;
@@ -115,7 +116,7 @@ class UserTest extends TestCase
         self::assertFalse($hasPermission, 'The user does not have both active and delete permissions.');
     }
 
-    public function testGetPermissionsAll(): void
+    final public function testGetPermissionsAll(): void
     {
         $permissions = Permissions::ACTIVE
             | Permissions::CREATE
@@ -134,5 +135,80 @@ class UserTest extends TestCase
         $permissionList = $this->fixture->getPermissions();
 
         self::assertSame($expected, $permissionList, 'The permissions returned do not match.');
+    }
+
+    final public function testGetStatusBasic(): void
+    {
+        $expected = 1;
+
+        $status = $this->fixture->getStatus();
+
+        self::assertSame($expected, $status, 'Status does not match expected starting value of 1.');
+    }
+
+    final public function testSetStatusSuccess(): void
+    {
+        $expected = UserStatus::REGULAR;
+
+        $this->fixture->setStatus($expected);
+        $status = $this->fixture->getStatus();
+
+        self::assertSame($expected, $status, 'Status is not what was set.');
+    }
+
+    final public function testSetStatusFailOdd(): void
+    {
+        $newStatus = UserStatus::REPEAT_VISITOR + 7;
+        $expected = UserStatus::ANONYMOUS;
+
+        $this->fixture->setStatus($newStatus);
+        $status = $this->fixture->getStatus();
+
+        self::assertSame($expected, $status, 'Status is not the initial value.');
+    }
+
+    final public function testSetStatusFailExcessive(): void
+    {
+        $newStatus = UserStatus::SUPER << 7;
+        $expected = UserStatus::ANONYMOUS;
+
+        $this->fixture->setStatus($newStatus);
+        $status = $this->fixture->getStatus();
+
+        self::assertSame($expected, $status, 'Status is not the initial value.');
+    }
+
+    final public function testGetStatusName(): void
+    {
+        $expected = 'REGISTERED';
+
+        $this->fixture->setStatus(UserStatus::REGISTERED);
+        $name = $this->fixture->getStatusName();
+
+        self::assertSame($expected, $name, 'The name does not match the expected name.');
+    }
+
+    final public function testIncreaseStatus(): void
+    {
+        $expected = UserStatus::INACTIVE;
+
+        $this->fixture->increaseStatus();
+        $this->fixture->increaseStatus();
+        $this->fixture->increaseStatus();
+        $status = $this->fixture->getStatus();
+
+        self::assertSame($expected, $status, 'Status is not the fourth user status.');
+    }
+
+    final public function testDecreaseStatus(): void
+    {
+        $expected = UserStatus::ACTIVE;
+
+        $this->fixture->setStatus(UserStatus::POWER);
+        $this->fixture->decreaseStatus();
+        $this->fixture->decreaseStatus();
+        $status = $this->fixture->getStatus();
+
+        self::assertSame($expected, $status, 'Status is not the fifth user status.');
     }
 }

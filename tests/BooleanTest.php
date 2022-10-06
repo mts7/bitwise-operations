@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class BooleanTest extends TestCase
 {
-    public function testIsAtLeastOneTrueAllTrue(): void
+    final public function testIsAtLeastOneTrueAllTrue(): void
     {
         $booleans = [
             true,
@@ -29,7 +29,7 @@ class BooleanTest extends TestCase
         self::assertTrue($result, 'None of the boolean values are true.');
     }
 
-    public function testIsAtLeastOneTrueSomeTrue(): void
+    final public function testIsAtLeastOneTrueSomeTrue(): void
     {
         $booleans = [
             true,
@@ -43,7 +43,7 @@ class BooleanTest extends TestCase
         self::assertTrue($result, 'None of the boolean values are true.');
     }
 
-    public function testIsAtLeastOneTrueNoneTrue(): void
+    final public function testIsAtLeastOneTrueNoneTrue(): void
     {
         $booleans = [
             false,
@@ -57,7 +57,7 @@ class BooleanTest extends TestCase
         self::assertFalse($result, 'At least one of the boolean values is true.');
     }
 
-    public function testAreAllTrueAllTrue(): void
+    final public function testAreAllTrueAllTrue(): void
     {
         $booleans = [
             true,
@@ -71,7 +71,7 @@ class BooleanTest extends TestCase
         self::assertTrue($result, 'At least one of the boolean values is false.');
     }
 
-    public function testAreAllTrueSomeTrue(): void
+    final public function testAreAllTrueSomeTrue(): void
     {
         $booleans = [
             true,
@@ -85,7 +85,7 @@ class BooleanTest extends TestCase
         self::assertFalse($result, 'At least one of the boolean values is false.');
     }
 
-    public function testAreAllTrueNoneTrue(): void
+    final public function testAreAllTrueNoneTrue(): void
     {
         $booleans = [
             false,
@@ -97,5 +97,41 @@ class BooleanTest extends TestCase
         $result = Boolean::areAllTrue($booleans);
 
         self::assertFalse($result, 'At least one of the boolean values is false.');
+    }
+
+    final public function testIsOddSuccess(): void
+    {
+        $value = 5;
+
+        $result = Boolean::isOdd($value);
+
+        self::assertTrue($result, 'The value is even.');
+    }
+
+    final public function testIsOddFail(): void
+    {
+        $value = 6;
+
+        $result = Boolean::isOdd($value);
+
+        self::assertFalse($result, 'The value is odd.');
+    }
+
+    final public function testIsEvenSuccess(): void
+    {
+        $value = 6;
+
+        $result = Boolean::isEven($value);
+
+        self::assertTrue($result, 'The value is odd.');
+    }
+
+    final public function testIsEvenFail(): void
+    {
+        $value = 5;
+
+        $result = Boolean::isEven($value);
+
+        self::assertFalse($result, 'The value is even.');
     }
 }

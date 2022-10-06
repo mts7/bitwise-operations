@@ -59,7 +59,11 @@ jobs:
       - install_composer_packages
       - run:
           name: Unit Tests
-          command: vendor/bin/phpunit
+          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/code-coverage
+      - store_artifacts:
+          path: ~/reports/code-coverage
+          destination: code-coverage
+
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows

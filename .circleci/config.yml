@@ -47,7 +47,7 @@ jobs:
           command: vendor/bin/phpstan analyze --memory-limit=-1 --configuration phpstan.neon src/ tests/
       - run:
           name: Psalm
-          command: vendor/bin/psalm --output-format=xml > ~/reports/psalm.xml
+          command: vendor/bin/psalm --output-format=xml | tee reports/psalm.xml
       - run:
           name: PHP Mess Detector
           command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile ~/reports/phpmd.html

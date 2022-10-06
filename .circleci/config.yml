@@ -43,16 +43,10 @@ jobs:
       - install_composer_packages
       - run:
           name: PHPStan
-          command: vendor/bin/phpstan analyze --memory-limit=-1 --configuration phpstan.neon src/ tests/ --error-format=json > reports/phpstan.json
-      - store_artifacts:
-          path: ~/reports/phpstan.json
-          destination: phpstan.json
+          command: vendor/bin/phpstan analyze --memory-limit=-1 --configuration phpstan.neon src/ tests/
       - run:
           name: Psalm
-          command: vendor/bin/psalm --output-format=xml > ~/reports/psalm.xml
-      - store_artifacts:
-          path: ~/reports/psalm.xml
-          destination: psalm.xml
+          command: vendor/bin/psalm --output-format=xml
       - run:
           name: PHP Mess Detector
           command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile ~/reports/phpmd.html

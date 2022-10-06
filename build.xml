@@ -82,6 +82,9 @@
         >
             <arg value="analyse"/>
             <arg value="--memory-limit=-1"/>
+            <arg value="--error-format=prettyJson"/>
+            <arg value=">"/>
+            <arg value="reports/phpstan.json"/>
         </exec>
     </target>
 

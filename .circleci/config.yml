@@ -59,11 +59,12 @@ jobs:
       - install_composer_packages
       - run:
           name: Unit Tests
-          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/code-coverage
+          command: phpdbg -qrr vendor/bin/phpunit --coverage-html ~/reports/code-coverage
+          environment:
+            XDEBUG_MODE: coverage
       - store_artifacts:
           path: ~/reports/code-coverage
           destination: code-coverage
-
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows

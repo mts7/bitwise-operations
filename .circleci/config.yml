@@ -44,12 +44,15 @@ jobs:
       - run:
           name: PHP Mess Detector
           command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile ~/reports/phpmd.html
+      - store_artifacts:
+          path: ~/reports/phpmd.html
+          destination: phpmd.html
       - run:
           name: Infection
           command: phpdbg -qrr -d memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100
       - store_artifacts:
-          path: ~/reports/phpmd.html
-          destination: phpmd.html
+          path: ~/reports/infection.html
+          destination: infection.html
   security:
     executor: php-81
     steps:

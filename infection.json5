@@ -6,7 +6,6 @@
         ]
     },
     "logs": {
-        "text": "reports/infection-text.log",
         "html": "reports/infection.html",
     },
     "mutators": {

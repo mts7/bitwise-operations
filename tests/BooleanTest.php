@@ -43,6 +43,18 @@ class BooleanTest extends TestCase
         self::assertTrue($result, 'None of the boolean values are true.');
     }
 
+    final public function testIsAtLeastOneTrueSomeTrueFalseLast(): void
+    {
+        $booleans = [
+            true,
+            false,
+        ];
+
+        $result = Boolean::isAtLeastOneTrue($booleans);
+
+        self::assertTrue($result, 'None of the boolean values are true.');
+    }
+
     final public function testIsAtLeastOneTrueNoneTrue(): void
     {
         $booleans = [

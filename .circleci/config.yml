@@ -47,6 +47,9 @@ jobs:
       - store_artifacts:
           path: ~/reports/phpmd.html
           destination: phpmd.html
+      - run:
+          name: Infection
+          command: phpdbg -qrr -d memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100
   security:
     executor: php-81
     steps:

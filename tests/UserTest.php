@@ -46,6 +46,17 @@ class UserTest extends TestCase
         self::assertSame($permission, $userPermission, 'The permissions were not applied.');
     }
 
+    final public function testAddPermissionTwice(): void
+    {
+        $permissions = Permissions::ACTIVE | Permissions::VIEW;
+
+        $this->fixture->addPermission(Permissions::ACTIVE);
+        $this->fixture->addPermission(Permissions::VIEW);
+        $userPermission = $this->fixture->getPermission();
+
+        self::assertSame($permissions, $userPermission, 'The permissions were not applied.');
+    }
+
     final public function testRemovePermissionSingle(): void
     {
         $permission = Permissions::ACTIVE;
@@ -210,5 +221,40 @@ class UserTest extends TestCase
         $status = $this->fixture->getStatus();
 
         self::assertSame($expected, $status, 'Status is not the fifth user status.');
+    }
+
+    /**
+     * @psalm-suppress ArgumentTypeCoercion
+     * @psalm-suppress RedundantCastGivenDocblockType
+     */
+    final public function testIsValidConstantMinimum(): void
+    {
+        $value = (int) min(UserStatus::getConstants());
+
+        $valid = (new UserStatus())->isValidConstant($value);
+
+        self::assertTrue($valid, 'The minimum value is not a valid constant.');
+    }
+
+    /**
+     * @psalm-suppress ArgumentTypeCoercion
+     * @psalm-suppress RedundantCastGivenDocblockType
+     */
+    final public function testIsValidConstantMaximum(): void
+    {
+        $value = (int) max(UserStatus::getConstants());
+
+        $valid = (new UserStatus())->isValidConstant($value);
+
+        self::assertTrue($valid, 'The maximum value is not a valid constant.');
+    }
+
+    final public function testIsPowerOfTwoSuccess(): void
+    {
+        $value = UserStatus::INACTIVE;
+
+        $valid = UserStatus::isPowerOfTwo($value);
+
+        self::assertTrue($valid, 'The inactive status is not a power of two.');
     }
 }

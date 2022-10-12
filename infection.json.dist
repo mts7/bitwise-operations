@@ -6,7 +6,7 @@
         ]
     },
     "logs": {
-        "html": "~/reports/infection.html",
+        "html": "reports/infection.html",
     },
     "mutators": {
         "@default": true

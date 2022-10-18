@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace BitOps;
 
+use BitOps\Constants\Permissions;
+use BitOps\Constants\UserStatus;
+
 /**
  * Example class of how to interact with permissions at various bits.
  */

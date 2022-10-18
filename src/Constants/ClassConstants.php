@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitOps;
+namespace BitOps\Constants;
 
 use ReflectionClass;
 use ReflectionClassConstant;

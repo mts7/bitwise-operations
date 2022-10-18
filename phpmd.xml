@@ -24,6 +24,8 @@
         <properties>
             <property name="exceptions">
                 <value>
+                    \BitOps\Helpers\Binary,
+                    \BitOps\Helpers\Convert,
                     \BitOps\Boolean,
                     \BitOps\Permissions,
                     \BitOps\UserStatus

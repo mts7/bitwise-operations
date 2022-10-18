@@ -12,3 +12,4 @@ parameters:
             message: "#^Method BitOps\\\\UserStatus\\:\\:getConstants\\(\\) should return array\\<string, int\\> but returns array\\<string, mixed\\>\\.$#"
             count: 1
             path: src/UserStatus.php
+    checkMissingIterableValueType: false

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace BitOps\Tests;
 
-use BitOps\Permissions;
+use BitOps\Constants\Permissions;
+use BitOps\Constants\UserStatus;
 use BitOps\User;
-use BitOps\UserStatus;
 use PHPUnit\Framework\TestCase;
 
 /**

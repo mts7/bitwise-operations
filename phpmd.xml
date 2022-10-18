@@ -24,11 +24,11 @@
         <properties>
             <property name="exceptions">
                 <value>
+                    \BitOps\Constants\Permissions,
+                    \BitOps\Constants\UserStatus,
                     \BitOps\Helpers\Binary,
                     \BitOps\Helpers\Convert,
-                    \BitOps\Boolean,
-                    \BitOps\Permissions,
-                    \BitOps\UserStatus
+                    \BitOps\Boolean
                 </value>
             </property>
         </properties>

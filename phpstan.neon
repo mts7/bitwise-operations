@@ -5,11 +5,11 @@ parameters:
         - ./tests
     ignoreErrors:
         -
-            message: "#^Method BitOps\\\\Permissions\\:\\:getConstants\\(\\) should return array\\<string, int\\> but returns array\\<string, mixed\\>\\.$#"
+            message: "#^Method BitOps\\\\Constants\\\\Permissions\\:\\:getConstants\\(\\) should return array\\<string, int\\> but returns array\\<string, mixed\\>\\.$#"
             count: 1
-            path: src/Permissions.php
+            path: src/Constants/Permissions.php
         -
-            message: "#^Method BitOps\\\\UserStatus\\:\\:getConstants\\(\\) should return array\\<string, int\\> but returns array\\<string, mixed\\>\\.$#"
+            message: "#^Method BitOps\\\\Constants\\\\UserStatus\\:\\:getConstants\\(\\) should return array\\<string, int\\> but returns array\\<string, mixed\\>\\.$#"
             count: 1
-            path: src/UserStatus.php
+            path: src/Constants/UserStatus.php
     checkMissingIterableValueType: false

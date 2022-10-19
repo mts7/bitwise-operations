@@ -12,7 +12,7 @@ commands:
   enable_extensions:
     steps:
       - run:
-          command: docker-php-ext-enable pcov
+          command: pecl install pcov && docker-php-ext-enable pcov
   install_composer:
     steps:
       - php/install-composer

@@ -17,11 +17,6 @@ commands:
             sudo apt update
             sudo apt install xsltproc
             sudo pecl -vvv install pcov
-  create_reports_directory:
-    steps:
-      - run:
-          name: Create reports directory
-          command: mkdir ~/reports
   install_composer:
     steps:
       - php/install-composer
@@ -49,7 +44,6 @@ jobs:
       - enable_extensions
       - install_composer
       - install_composer_packages
-      - create_reports_directory
       - run:
           name: Unit Tests
           command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/code-coverage --log-junit ~/reports/junit.xml

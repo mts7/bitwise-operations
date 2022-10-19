@@ -49,13 +49,16 @@ jobs:
           command: vendor/bin/psalm --output-format=xml
       - run:
           name: PHP Mess Detector
-          command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile ~/reports/phpmd.html
+          command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile reports/phpmd.html
       - store_artifacts:
-          path: ~/reports/phpmd.html
+          path: reports/phpmd.html
           destination: phpmd.html
       - run:
           name: Infection
           command: php -d pcov.enabled=1 -d memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100
+      - store_artifacts:
+          path: reports/infection.html
+          destination: infection.html
   security:
     executor: php-81
     steps:
@@ -64,9 +67,9 @@ jobs:
       - install_composer_packages
       - run:
           name: Psalm Security Analysis
-          command: vendor/bin/psalm --taint-analysis --report=~/reports/psalm-security.sarif
+          command: vendor/bin/psalm --taint-analysis --report=reports/psalm-security.sarif
       - store_artifacts:
-          path: ~/reports/psalm-security.sarif
+          path: reports/psalm-security.sarif
           destination: psalm-security.sarif
   unit_test:
     executor: php-81
@@ -77,11 +80,11 @@ jobs:
       - install_composer_packages
       - run:
           name: Unit Tests
-          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/code-coverage
+          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html reports/code-coverage
           environment:
             XDEBUG_MODE: coverage
       - store_artifacts:
-          path: ~/reports/code-coverage
+          path: reports/code-coverage
           destination: code-coverage
 
 workflows:

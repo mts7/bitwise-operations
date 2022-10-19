@@ -14,18 +14,14 @@ commands:
       - run:
           name: Install pcov
           command: sudo pecl -vvv install pcov
+  create_reports_directory:
+    steps:
+      - run:
+          name: Create reports directory
+          command: mkdir ~/reports
   install_composer:
     steps:
       - php/install-composer
-      - run:
-          name: Checking directories
-          command: |
-            pwd
-            ls -hal
-            cd ~
-            pwd
-            ls -hal ~
-            mkdir ~/reports
 
   install_composer_packages:
     steps:
@@ -50,11 +46,12 @@ jobs:
       - enable_extensions
       - install_composer
       - install_composer_packages
+      - create_reports_directory
       - run:
           name: PHPStan
           command: vendor/bin/phpstan analyze --memory-limit=-1 --error-format=prettyJson | tee ~/reports/phpstan.json
       - store_artifacts:
-          path: ~/reports/phpstan.json
+          path: phpstan.json
       - run:
           name: Psalm
           command: vendor/bin/psalm --output-format=xml
@@ -76,6 +73,7 @@ jobs:
       - checkout
       - install_composer
       - install_composer_packages
+      - create_reports_directory
       - run:
           name: Psalm Security Analysis
           command: vendor/bin/psalm --taint-analysis --report=~/reports/psalm-security.sarif

@@ -14,12 +14,13 @@ commands:
       - run:
           name: Upgrade PEAR and PECL
           command: |
-            pear upgrade
-            pecl upgrade
+            sudo pear upgrade
+            sudo pecl upgrade
       - run:
           name: Update channels
           command: |
-            pecl channel-update pecl.php.net
+            sudo pear channel-update pear.php.net
+            sudo pecl channel-update pecl.php.net
   enable_extensions:
     steps:
       - run:

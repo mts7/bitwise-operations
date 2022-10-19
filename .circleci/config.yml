@@ -58,7 +58,7 @@ jobs:
           command: vendor/bin/psalm --output-format=xml
       - run:
           name: PHP Mess Detector
-          command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile reports/phpmd.html
+          command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile ~/reports/phpmd.html
       - store_artifacts:
           path: ~/reports/phpmd.html
           destination: phpmd.html

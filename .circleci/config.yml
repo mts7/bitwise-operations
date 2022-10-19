@@ -51,7 +51,8 @@ jobs:
           name: PHPStan
           command: vendor/bin/phpstan analyze --memory-limit=-1 --error-format=prettyJson | tee ~/reports/phpstan.json
       - store_artifacts:
-          path: phpstan.json
+          path: ~/reports/phpstan.json
+          destination: phpstan.json
       - run:
           name: Psalm
           command: vendor/bin/psalm --output-format=xml

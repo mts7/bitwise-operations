@@ -63,7 +63,13 @@ jobs:
           destination: phpstan.json
       - run:
           name: Psalm
-          command: vendor/bin/psalm --output-format=xml
+          command: |
+            apt install xsltproc
+            composer require --dev roave/psalm-html-output
+            vendor/bin/psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > ~/reports/psalm.html
+      - store_artifacts:
+          path: ~/reports/psalm.html
+          destination: psalm.html
       - run:
           name: PHP Mess Detector
           command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile ~/reports/phpmd.html

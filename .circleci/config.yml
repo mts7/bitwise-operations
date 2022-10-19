@@ -25,6 +25,7 @@ commands:
             cd ~
             pwd
             ls -hal ~
+            mkdir ~/reports
 
   install_composer_packages:
     steps:
@@ -94,7 +95,7 @@ jobs:
           environment:
             XDEBUG_MODE: coverage
       - store_artifacts:
-          path: reports/code-coverage
+          path: ~/reports/code-coverage
           destination: code-coverage
 
 workflows:

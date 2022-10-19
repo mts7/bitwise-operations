@@ -92,9 +92,9 @@ jobs:
       - create_reports_directory
       - run:
           name: Psalm Security Analysis
-          command: vendor/bin/psalm --taint-analysis --report=~/reports/psalm-security.sarif
+          command: vendor/bin/psalm --taint-analysis --report=reports/psalm-security.sarif
       - store_artifacts:
-          path: ~/reports/psalm-security.sarif
+          path: reports/psalm-security.sarif
           destination: psalm-security.sarif
 
 workflows:

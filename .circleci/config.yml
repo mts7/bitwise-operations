@@ -17,6 +17,14 @@ commands:
   install_composer:
     steps:
       - php/install-composer
+      - run:
+          name: Checking directories
+          command: |
+            pwd
+            ls -hal
+            cd ~
+            pwd
+            ls -hal ~
 
   install_composer_packages:
     steps:
@@ -41,12 +49,6 @@ jobs:
       - enable_extensions
       - install_composer
       - install_composer_packages
-      - run:
-          name: Checking directories
-          command: |
-            pwd
-            ls -hal
-            ls -hal ~
       - run:
           name: PHPStan
           command: vendor/bin/phpstan analyze --memory-limit=-1 --error-format=prettyJson | tee ~/reports/phpstan.json

@@ -48,6 +48,14 @@ jobs:
       - install_composer_packages
       - create_reports_directory
       - run:
+          name: Unit Tests
+          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/code-coverage
+          environment:
+            XDEBUG_MODE: coverage
+      - store_artifacts:
+          path: ~/reports/code-coverage
+          destination: code-coverage
+      - run:
           name: PHPStan
           command: vendor/bin/phpstan analyze --memory-limit=-1 --error-format=prettyJson | tee ~/reports/phpstan.json
       - store_artifacts:
@@ -81,21 +89,6 @@ jobs:
       - store_artifacts:
           path: ~/reports/psalm-security.sarif
           destination: psalm-security.sarif
-  unit_test:
-    executor: php-81
-    steps:
-      - checkout
-      - enable_extensions
-      - install_composer
-      - install_composer_packages
-      - run:
-          name: Unit Tests
-          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/code-coverage
-          environment:
-            XDEBUG_MODE: coverage
-      - store_artifacts:
-          path: ~/reports/code-coverage
-          destination: code-coverage
 
 workflows:
   build:
@@ -104,10 +97,6 @@ workflows:
       - static_analysis:
           requires:
             - composer_validate
-      - unit_test:
-          requires:
-            - composer_validate
       - security:
           requires:
             - static_analysis
-            - unit_test

@@ -119,7 +119,7 @@ store the permissions.
 
 Sometimes we want to find out when a method call returns a boolean, but in a
 loop. Two of the approaches to this using bitwise operators would be checking if
-any of the results are `true` and checking if all of the results are `true`. In
+any of the results are `true` and checking if all the results are `true`. In
 some situations, throwing an exception, breaking, or returning early would be
 good to do if any result was `false`, which would then follow the second
 approach.
@@ -146,7 +146,7 @@ numbers will have the last bit off.
 ## Tracking Status
 
 When a user (as an example) exists, it should only have a single status at any
-given time. To track this, we can use a `UserStatus` class to hold all of the
+given time. To track this, we can use a `UserStatus` class to hold all the
 necessary status names in their specific order. The user would initially have a
 status of `Anonymous`, then can be changed to a `Repeat Visitor` if the user has
 visited an application multiple times, and then changed to `Registered` after
@@ -161,7 +161,7 @@ modification of the user status, as handled by the `User` class.
 ## Binary Clock
 
 A binary clock algorithm is nothing new. This clock increments the time using
-the And (&) and Not (~) bitwise operators inside of a for loop that iterates
+the And (&) and Not (~) bitwise operators inside a for loop that iterates
 from the end of the binary value (1-position) to the beginning of the binary
 value. The example below indicates how this clock could be used. Something to
 add would be a display mechanism to illuminate LEDs or replace the output on a

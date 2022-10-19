@@ -12,11 +12,8 @@ commands:
   enable_extensions:
     steps:
       - run:
-          name: Install xsltproc and pcov
-          command: |
-            sudo apt update
-            sudo apt install xsltproc
-            sudo pecl -vvv install pcov
+          name: Install pcov
+          command: sudo pecl -vvv install pcov
   install_composer:
     steps:
       - php/install-composer
@@ -37,9 +34,8 @@ jobs:
       - run:
           name: Validate composer file
           command: composer validate --no-interaction --ansi
-  static_analysis:
+  unit_test:
     executor: php-81
-    parallelism: 6
     steps:
       - checkout
       - enable_extensions
@@ -55,6 +51,42 @@ jobs:
           destination: code-coverage
       - store_test_results:
           path: ~/reports/junit.xml
+  psalm:
+    executor: php-81
+    steps:
+      - checkout
+      - install_composer
+      - install_composer_packages
+      - run:
+          name: Install xsltproc for HTML reporting
+          command: |
+            sudo apt update
+            sudo apt install xsltproc
+      - run:
+          name: Psalm
+          command: vendor/bin/psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > ~/reports/psalm.html
+      - store_artifacts:
+          path: ~/reports/psalm.html
+          destination: psalm.html
+  mutation:
+    executor: php-81
+    steps:
+      - checkout
+      - enable_extensions
+      - install_composer
+      - install_composer_packages
+      - run:
+          name: Infection
+          command: php -d pcov.enabled=1 -d memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100
+      - store_artifacts:
+          path: reports/infection.html
+          destination: infection.html
+  static_analysis:
+    executor: php-81
+    steps:
+      - checkout
+      - install_composer
+      - install_composer_packages
       - run:
           name: PHPStan
           command: vendor/bin/phpstan analyze --memory-limit=-1 --error-format=prettyJson | tee ~/reports/phpstan.json
@@ -62,23 +94,11 @@ jobs:
           path: ~/reports/phpstan.json
           destination: phpstan.json
       - run:
-          name: Psalm
-          command: vendor/bin/psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > ~/reports/psalm.html
-      - store_artifacts:
-          path: ~/reports/psalm.html
-          destination: psalm.html
-      - run:
           name: PHP Mess Detector
           command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile ~/reports/phpmd.html
       - store_artifacts:
           path: ~/reports/phpmd.html
           destination: phpmd.html
-      - run:
-          name: Infection
-          command: php -d pcov.enabled=1 -d memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100
-      - store_artifacts:
-          path: reports/infection.html
-          destination: infection.html
       - run:
           name: Psalm Security Analysis
           command: vendor/bin/psalm --taint-analysis --report=reports/psalm-security.sarif
@@ -90,6 +110,15 @@ workflows:
   build:
     jobs:
       - composer_validate
+      - unit_test:
+          requires:
+            - composer_validate
       - static_analysis:
+          requires:
+            - composer_validate
+      - psalm:
+          requires:
+            - composer_validate
+      - mutation:
           requires:
             - composer_validate

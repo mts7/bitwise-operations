@@ -59,8 +59,6 @@ Exclusive or (`^`) checks for differences between set values.
 001 ^ 011 == 010
 ```
 
----
-
 ### Not
 
 Not (`~`) is a complement. Flipping bits is done using both And and Not where one
@@ -88,8 +86,6 @@ right operand.
 1010 << 1 == 10100
 100 << 2 == 10000
 ```
-
----
 
 ### Shift Right
 

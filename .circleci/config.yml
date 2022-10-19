@@ -24,11 +24,8 @@ commands:
   enable_extensions:
     steps:
       - run:
-          name: Install and enable pcov, remove xdebug
-          command: |
-            sudo pecl -vvv install pcov
-            docker-php-ext-enable pcov
-            rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+          name: Install pcov
+          command: sudo pecl -vvv install pcov
   install_composer:
     steps:
       - php/install-composer

@@ -62,7 +62,6 @@ jobs:
       - checkout
       - install_composer
       - install_composer_packages
-      - create_reports_directory
       - run:
           name: Install xsltproc for HTML reporting
           command: |
@@ -70,9 +69,9 @@ jobs:
             sudo apt install xsltproc
       - run:
           name: Psalm
-          command: vendor/bin/psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > ~/reports/psalm.html
+          command: vendor/bin/psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > reports/psalm.html
       - store_artifacts:
-          path: ~/reports/psalm.html
+          path: reports/psalm.html
           destination: psalm.html
   mutation:
     executor: php-81

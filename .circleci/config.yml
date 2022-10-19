@@ -11,7 +11,8 @@ orbs:
 commands:
   enable_extensions:
     steps:
-      command: docker-php-ext-enable pcov
+      - run:
+          command: docker-php-ext-enable pcov
   install_composer:
     steps:
       - php/install-composer

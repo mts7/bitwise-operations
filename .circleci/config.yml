@@ -42,6 +42,11 @@ jobs:
       - install_composer
       - install_composer_packages
       - run:
+          name: Checking directories
+          command: |
+            pwd
+            ls -hal
+      - run:
           name: PHPStan
           command: vendor/bin/phpstan analyze --memory-limit=-1 --error-format=prettyJson | tee ~/reports/phpstan.json
       - store_artifacts:
@@ -69,7 +74,7 @@ jobs:
       - install_composer_packages
       - run:
           name: Psalm Security Analysis
-          command: vendor/bin/psalm --taint-analysis --report=reports/psalm-security.sarif
+          command: vendor/bin/psalm --taint-analysis --report=~/reports/psalm-security.sarif
       - store_artifacts:
           path: reports/psalm-security.sarif
           destination: psalm-security.sarif
@@ -82,7 +87,7 @@ jobs:
       - install_composer_packages
       - run:
           name: Unit Tests
-          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html reports/code-coverage
+          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/code-coverage
           environment:
             XDEBUG_MODE: coverage
       - store_artifacts:

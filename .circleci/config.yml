@@ -49,7 +49,12 @@ jobs:
       - create_reports_directory
       - run:
           name: Unit Tests
-          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-xml=coverage.xml --log-junit=~/reports/junit.xml
+          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html=~/reports/code-coverage --log-junit=~/reports/junit.xml
+          environment:
+            XDEBUG_MODE: coverage
+      - store_artifacts:
+          path: ~/reports/code-coverage
+          destination: code-coverage
       - store_test_results:
           path: ~/reports/junit.xml
       - run:

@@ -68,7 +68,6 @@ jobs:
           command: |
             sudo apt update
             sudo apt install xsltproc
-            composer require --dev roave/psalm-html-output
             vendor/bin/psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > ~/reports/psalm.html
       - store_artifacts:
           path: ~/reports/psalm.html

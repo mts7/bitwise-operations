@@ -9,6 +9,18 @@ orbs:
   php: circleci/php@1.1.0
 
 commands:
+  update_base:
+    steps:
+      - run:
+          name: Upgrade PEAR and PECL
+          command: |
+            pear upgrade
+            pecl upgrade
+      - run:
+          name: Update channels
+          command: |
+            pear channel-update pear.php.net
+            pecl channel-update pecl.php.net
   enable_extensions:
     steps:
       - run:
@@ -41,6 +53,7 @@ jobs:
     executor: php-81
     steps:
       - checkout
+      - update_base
       - enable_extensions
       - install_composer
       - install_composer_packages

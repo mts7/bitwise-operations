@@ -89,7 +89,6 @@ jobs:
       - checkout
       - install_composer
       - install_composer_packages
-      - create_reports_directory
       - run:
           name: Psalm Security Analysis
           command: vendor/bin/psalm --taint-analysis --report=reports/psalm-security.sarif

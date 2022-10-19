@@ -9,6 +9,21 @@ orbs:
   php: circleci/php@1.1.0
 
 commands:
+  restore_the_cache:
+    steps:
+      - restore_cache:
+          keys:
+            - dependencies-v1-{{ checksum "composer.lock" }}
+            - dependencies-
+
+  save_the_cache:
+    steps:
+      - save_cache:
+          key: dependencies-v1-{{ checksum "composer.lock" }}
+          paths:
+            - ~/project/vendor
+            - /usr/local/bin/composer
+            - ~/.composer
   enable_extensions:
     steps:
       - run:
@@ -29,6 +44,7 @@ commands:
           install-flags: --no-interaction --prefer-dist
           cache-version: php-81-v1
           cache-key: composer.json
+      - save_the_cache
 
 jobs:
   composer_validate:
@@ -44,8 +60,7 @@ jobs:
     steps:
       - checkout
       - enable_extensions
-      - install_composer
-      - install_composer_packages
+      - restore_the_cache
       - run:
           name: Unit Tests
           command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/code-coverage --log-junit ~/reports/junit.xml
@@ -62,6 +77,7 @@ jobs:
       - checkout
       - install_composer
       - install_composer_packages
+      - create_reports_directory
       - run:
           name: Install xsltproc for HTML reporting
           command: |
@@ -69,9 +85,9 @@ jobs:
             sudo apt install xsltproc
       - run:
           name: Psalm
-          command: vendor/bin/psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > reports/psalm.html
+          command: vendor/bin/psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > ~/reports/psalm.html
       - store_artifacts:
-          path: reports/psalm.html
+          path: ~/reports/psalm.html
           destination: psalm.html
   mutation:
     executor: php-81

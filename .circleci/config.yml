@@ -19,7 +19,6 @@ commands:
       - run:
           name: Update channels
           command: |
-            pear channel-update pear.php.net
             pecl channel-update pecl.php.net
   enable_extensions:
     steps:

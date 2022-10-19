@@ -49,7 +49,7 @@ jobs:
           destination: phpmd.html
       - run:
           name: Infection
-          command: php -d pcov.enabled=1 memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100
+          command: php -d pcov.enabled=1,memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100
   security:
     executor: php-81
     steps:

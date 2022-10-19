@@ -43,7 +43,10 @@ jobs:
       - install_composer_packages
       - run:
           name: PHPStan
-          command: vendor/bin/phpstan analyze --memory-limit=-1
+          command: vendor/bin/phpstan analyze --memory-limit=-1 --error-format=prettyJson | tee reports/phpstan.json
+      - store_artifacts:
+          path: reports/phpstan.json
+          destination: phpstan.json
       - run:
           name: Psalm
           command: vendor/bin/psalm --output-format=xml

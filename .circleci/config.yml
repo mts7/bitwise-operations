@@ -44,17 +44,24 @@ commands:
           install-flags: --no-interaction --prefer-dist
           cache-version: php-81-v1
           cache-key: composer.json
-      - save_the_cache
-
-jobs:
   composer_validate:
-    executor: php-81
     steps:
       - checkout
       - install_composer
       - run:
           name: Validate composer file
           command: composer validate --no-interaction --ansi
+
+jobs:
+  bundle_packages:
+    executor: php-81
+    steps:
+      - checkout
+      - restore_the_cache
+      - install_composer
+      - composer_validate
+      - install_composer_packages
+      - save_the_cache
   unit_test:
     executor: php-81
     steps:
@@ -130,16 +137,16 @@ jobs:
 workflows:
   build:
     jobs:
-      - composer_validate
+      - bundle_packages
       - unit_test:
           requires:
-            - composer_validate
+            - bundle_packages
       - static_analysis:
           requires:
-            - composer_validate
+            - bundle_packages
       - psalm:
           requires:
-            - composer_validate
+            - bundle_packages
       - mutation:
           requires:
-            - composer_validate
+            - bundle_packages

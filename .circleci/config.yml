@@ -39,6 +39,7 @@ jobs:
           command: composer validate --no-interaction --ansi
   static_analysis:
     executor: php-81
+    parallelism: 6
     steps:
       - checkout
       - enable_extensions

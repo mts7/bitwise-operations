@@ -12,8 +12,11 @@ commands:
   enable_extensions:
     steps:
       - run:
-          name: Install pcov
-          command: sudo pecl -vvv install pcov
+          name: Install xsltproc and pcov
+          command: |
+            sudo apt update
+            sudo apt install xsltproc
+            sudo pecl -vvv install pcov
   create_reports_directory:
     steps:
       - run:
@@ -65,10 +68,7 @@ jobs:
           destination: phpstan.json
       - run:
           name: Psalm
-          command: |
-            sudo apt update
-            sudo apt install xsltproc
-            vendor/bin/psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > ~/reports/psalm.html
+          command: vendor/bin/psalm --output-format=xml | xsltproc vendor/roave/psalm-html-output/psalm-html-output.xsl - > ~/reports/psalm.html
       - store_artifacts:
           path: ~/reports/psalm.html
           destination: psalm.html

@@ -109,7 +109,7 @@ jobs:
           path: ~/reports/junit.xml
       - run:
           name: Mutation Tests
-          command: php -d memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100 --coverage=~/reports
+          command: php -d memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100 --coverage=reports
       - store_artifacts:
           path: reports/infection.html
           destination: infection.html

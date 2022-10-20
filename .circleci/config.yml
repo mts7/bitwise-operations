@@ -11,9 +11,21 @@ orbs:
 commands:
   enable_extensions:
     steps:
+      - restore_cache:
+          name: Restore Cache for pcov
+          keys:
+            - pecl-v1-{{ checksum "composer.json" }}
+            - pecl-v1-
       - run:
           name: Install pcov
           command: sudo pecl -vvv install pcov
+      - save_cache:
+          name: Save Cache for pcov
+          key: pecl-v1-{{ checksum "composer.json" }}
+          paths:
+            - /usr/local/lib/php/extensions/no-debug-non-zts-20210902
+            - /usr/local/lib/php/test/pcov/tests
+            - /usr/local/lib/php/doc/pcov
   create_reports_directory:
     steps:
       - run:
@@ -26,24 +38,12 @@ commands:
   install_composer_packages:
     steps:
       - checkout
-      - restore_cache:
-          name: Restore Composer Package Cache
-          keys:
-            - composer-v1-{{ checksum "composer.json" }}
-            - composer-v1-
       - php/install-packages:
           install-flags: --no-interaction --prefer-dist
           cache-version: php-81-v1
           cache-key: composer.json
-      - save_cache:
-          name: Save Composer Package Cache
-          key: composer-v1-{{ checksum "composer.json" }}
-          paths:
-            - ~/project/vendor
-            - ~/.composer/cache
   composer_validate:
     steps:
-      - install_composer
       - run:
           name: Validate composer file
           command: composer validate --no-interaction --ansi

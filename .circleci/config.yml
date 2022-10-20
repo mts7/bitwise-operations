@@ -11,21 +11,32 @@ orbs:
 commands:
   enable_extensions:
     steps:
+      - run: pecl config-show
+      - run: mkdir pecl-cache
       - restore_cache:
-          name: Restore Cache for pcov
-          keys:
-            - pecl-v1-{{ checksum "composer.json" }}
-            - pecl-v1-
+         keys:
+         - pecl-v2-{{ checksum "composer.json" }}
+         - pecl-v2-
       - run:
-          name: Install pcov
-          command: sudo pecl -vvv install pcov
+          name: Copying restored pecl extensions cache into extensions directory
+          command: sudo cp -R pecl-cache/. $(pecl config-show | grep ext_dir | awk -F ' ' '{print $(NF)}')
+      - run:
+          name: Install pecl extensions
+          command: |
+            pecl_dir=$(pecl config-show | grep ext_dir | awk -F ' ' '{print $(NF)}')
+            ini_dir=$(php --ini | grep "Scan for additional" | awk -F ': ' '{print $2}')
+
+            if [ ! -f "$pecl_dir/pcov.so" ]; then
+                sudo pecl install pcov
+            fi
+            echo "extension=pcov.so" | sudo tee "$ini_dir/pcov.ini"
+      - run:
+          name: Copying pecl extensions to temp directory which will be cached
+          command: sudo cp -R $(pecl config-show | grep ext_dir | awk -F ' ' '{print $(NF)}')/* pecl-cache/
       - save_cache:
-          name: Save Cache for pcov
-          key: pecl-v1-{{ checksum "composer.json" }}
+          key: pecl-v2-{{ checksum "composer.json" }}
           paths:
-            - /usr/local/lib/php/extensions/no-debug-non-zts-20210902
-            - /usr/local/lib/php/test/pcov/tests
-            - /usr/local/lib/php/doc/pcov
+            - pecl-cache
   create_reports_directory:
     steps:
       - run:

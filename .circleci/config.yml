@@ -4,6 +4,7 @@ executors:
   php-81:
     docker:
       - image: cimg/php:8.1
+    resource_class: small
 
 orbs:
   php: circleci/php@1.1.0
@@ -60,7 +61,6 @@ commands:
   install_composer:
     steps:
       - php/install-composer
-
   install_composer_packages:
     steps:
       - restore_cache:
@@ -127,7 +127,7 @@ jobs:
       - store_artifacts:
           path: ~/reports/psalm.html
           destination: psalm.html
-  mutation:
+  mutation_test:
     executor: php-81
     steps:
       - checkout_code
@@ -178,6 +178,6 @@ workflows:
       - psalm:
           requires:
             - bundle_packages
-      - mutation:
+      - mutation_test:
           requires:
             - bundle_packages

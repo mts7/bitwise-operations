@@ -87,6 +87,7 @@ commands:
 jobs:
   bundle_packages:
     executor: php-81
+    steps:
       - checkout_code
       - install_composer
       - composer_validate

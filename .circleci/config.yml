@@ -79,6 +79,7 @@ commands:
             - ~/project/composer.lock
             - ~/.composer/cache
   init_jobs:
+    executor: php-81
     steps:
       - checkout_code
       - install_composer
@@ -86,7 +87,6 @@ commands:
 
 jobs:
   test:
-    executor: php-81
     steps:
       - init_jobs
       - enable_extensions
@@ -110,7 +110,6 @@ jobs:
           path: reports/infection.html
           destination: infection.html
   psalm:
-    executor: php-81
     steps:
       - init_jobs
       - create_reports_directory
@@ -126,7 +125,6 @@ jobs:
           path: ~/reports/psalm.html
           destination: psalm.html
   static_analysis:
-    executor: php-81
     steps:
       - init_jobs
       - run:

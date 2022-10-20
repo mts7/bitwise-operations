@@ -101,7 +101,7 @@ jobs:
       - enable_extensions
       - run:
           name: Unit Tests
-          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/coverage-xml --log-junit ~/reports/junit.xml
+          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-xml=~/reports/coverage-xml --log-junit=~/reports/junit.xml
           environment:
             XDEBUG_MODE: coverage
       - store_artifacts:

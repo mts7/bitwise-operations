@@ -62,15 +62,16 @@
 
     <target name="test">
         <exec
-                executable="phpdbg"
+                executable="php"
                 logoutput="true"
                 passthru="true"
                 checkreturn="true"
         >
-            <arg value="-qrr"/>
+            <arg value="-d"/>
+            <arg value="pcov.enabled=1"/>
             <arg value="vendor/bin/phpunit"/>
-            <arg value="--coverage-html"/>
-            <arg value="reports/code-coverage"/>
+            <arg value="--coverage-xml=reports/coverage-xml"/>
+            <arg value="--log-junit=reports/junit.xml"/>
         </exec>
     </target>
 
@@ -122,18 +123,18 @@
 
     <target name="mutate">
         <exec
-                executable="phpdbg"
+                executable="php"
                 logoutput="true"
                 passthru="true"
                 checkreturn="true"
         >
-            <arg value="-qrr" />
             <arg value="-d" />
             <arg value="memory_limit=-1" />
             <arg value="vendor/bin/infection" />
             <arg value="--threads=4" />
             <arg value="--min-msi=100" />
             <arg value="--min-covered-msi=100" />
+            <arg value="--coverage=reports" />
         </exec>
     </target>
 </project>

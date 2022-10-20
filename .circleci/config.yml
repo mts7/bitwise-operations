@@ -133,13 +133,6 @@ jobs:
       - store_artifacts:
           path: ~/reports/psalm.html
           destination: psalm.html
-  mutation_test:
-    executor: php-81
-    steps:
-      - checkout_code
-      - install_composer
-      - install_composer_packages
-      - enable_extensions
   static_analysis:
     executor: php-81
     steps:
@@ -178,6 +171,3 @@ workflows:
       - psalm:
           requires:
             - bundle_packages
-      - mutation_test:
-          requires:
-            - unit_test

@@ -92,7 +92,7 @@ jobs:
       - install_composer
       - composer_validate
       - install_composer_packages
-  unit_test:
+  test:
     executor: php-81
     steps:
       - checkout_code
@@ -101,7 +101,7 @@ jobs:
       - enable_extensions
       - run:
           name: Unit Tests
-          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/code-coverage --log-junit ~/reports/junit.xml
+          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/coverage-xml --log-junit ~/reports/junit.xml
           environment:
             XDEBUG_MODE: coverage
       - store_artifacts:
@@ -109,6 +109,12 @@ jobs:
           destination: code-coverage
       - store_test_results:
           path: ~/reports/junit.xml
+      - run:
+          name: Mutation Tests
+          command: php -d memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100 --coverage=~/reports
+      - store_artifacts:
+          path: reports/infection.html
+          destination: infection.html
   psalm:
     executor: php-81
     steps:
@@ -134,12 +140,6 @@ jobs:
       - install_composer
       - install_composer_packages
       - enable_extensions
-      - run:
-          name: Infection
-          command: php -d pcov.enabled=1 -d memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100
-      - store_artifacts:
-          path: reports/infection.html
-          destination: infection.html
   static_analysis:
     executor: php-81
     steps:
@@ -169,7 +169,7 @@ workflows:
   build:
     jobs:
       - bundle_packages
-      - unit_test:
+      - test:
           requires:
             - bundle_packages
       - static_analysis:
@@ -180,4 +180,4 @@ workflows:
             - bundle_packages
       - mutation_test:
           requires:
-            - bundle_packages
+            - unit_test

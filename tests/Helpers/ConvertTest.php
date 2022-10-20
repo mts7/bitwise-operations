@@ -25,6 +25,9 @@ class ConvertTest extends TestCase
         self::assertSame($expected, $result, 'The conversion failed.');
     }
 
+    /**
+     * @return iterable<string,array<string,string|int>>
+     */
     public function binaryToIntegerData(): iterable
     {
         yield 'binary value' => [

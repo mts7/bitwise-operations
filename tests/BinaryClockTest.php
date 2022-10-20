@@ -26,6 +26,8 @@ class BinaryClockTest extends TestCase
 
     /**
      * @dataProvider getTimeData
+     *
+     * @param array<string,array<string,string>> $expected
      */
     final public function testGetTime(string $initialTime, array $expected): void
     {
@@ -38,6 +40,9 @@ class BinaryClockTest extends TestCase
         self::assertSame($expected, $timings);
     }
 
+    /**
+     * @return iterable<string,array<string,string|array<string,string>>>
+     */
     public function getTimeData(): iterable
     {
         yield 'in between' => [
@@ -121,6 +126,9 @@ class BinaryClockTest extends TestCase
         self::assertSame($expected, $timings);
     }
 
+    /**
+     * @return iterable<string,array<string,string|array<string,string>>>
+     */
     final public function incrementTimeData(): iterable
     {
         yield 'in between' => [

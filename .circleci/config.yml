@@ -78,26 +78,18 @@ commands:
             - ~/project/vendor
             - ~/project/composer.lock
             - ~/.composer/cache
-  composer_validate:
-    steps:
-      - run:
-          name: Validate composer file
-          command: composer validate --no-interaction --ansi
-
-jobs:
-  bundle_packages:
-    executor: php-81
+  init_jobs:
+    name: "Checkout code, install composer, and install composer packages."
     steps:
       - checkout_code
       - install_composer
-      - composer_validate
       - install_composer_packages
+
+jobs:
   test:
     executor: php-81
     steps:
-      - checkout_code
-      - install_composer
-      - install_composer_packages
+      - init_jobs
       - enable_extensions
       - run:
           name: Unit Tests
@@ -121,9 +113,7 @@ jobs:
   psalm:
     executor: php-81
     steps:
-      - checkout_code
-      - install_composer
-      - install_composer_packages
+      - init_jobs
       - create_reports_directory
       - run:
           name: Install xsltproc for HTML reporting
@@ -139,9 +129,7 @@ jobs:
   static_analysis:
     executor: php-81
     steps:
-      - checkout_code
-      - install_composer
-      - install_composer_packages
+      - init_jobs
       - run:
           name: PHP Mess Detector
           command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile ~/reports/phpmd.html
@@ -164,13 +152,10 @@ jobs:
 workflows:
   build:
     jobs:
-      - bundle_packages
-      - test:
-          requires:
-            - bundle_packages
+      - test
       - static_analysis:
           requires:
-            - bundle_packages
+            - test
       - psalm:
           requires:
-            - bundle_packages
+            - test

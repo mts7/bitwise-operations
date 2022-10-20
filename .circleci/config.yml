@@ -101,10 +101,10 @@ jobs:
       - enable_extensions
       - run:
           name: Unit Tests
-          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-xml=~/reports/coverage-xml --log-junit=~/reports/junit.xml
+          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-xml=~/reports/coverage-xml --log-junit ~/reports/junit.xml
       - store_artifacts:
-          path: ~/reports/code-coverage
-          destination: code-coverage
+          path: ~/reports/coverage-xml
+          destination: coverage-xml
       - store_test_results:
           path: ~/reports/junit.xml
       - run:

@@ -79,7 +79,6 @@ commands:
             - ~/project/composer.lock
             - ~/.composer/cache
   init_jobs:
-    executor: php-81
     steps:
       - checkout_code
       - install_composer
@@ -87,12 +86,13 @@ commands:
 
 jobs:
   test:
+    executor: php-81
     steps:
       - init_jobs
       - enable_extensions
       - run:
           name: Unit Tests
-          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-xml reports/coverage-xml --log-junit ~/reports/junit.xml
+          command: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-html ~/reports/code-coverage --coverage-xml reports/coverage-xml --log-junit ~/reports/junit.xml
       - store_artifacts:
           path: reports/coverage-xml
           destination: coverage-xml
@@ -110,6 +110,7 @@ jobs:
           path: reports/infection.html
           destination: infection.html
   psalm:
+    executor: php-81
     steps:
       - init_jobs
       - create_reports_directory
@@ -125,6 +126,7 @@ jobs:
           path: ~/reports/psalm.html
           destination: psalm.html
   static_analysis:
+    executor: php-81
     steps:
       - init_jobs
       - run:

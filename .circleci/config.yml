@@ -9,6 +9,21 @@ orbs:
   php: circleci/php@1.1.0
 
 commands:
+  checkout_code:
+    steps:
+      - restore_cache:
+          keys:
+            - source-v1-{{ .Branch }}-{{ .Revision }}
+            - source-v1-{{ .Branch }}-
+            - source-v1-
+      - checkout
+      - run:
+          name: git Garbage Collection
+          command: git gc
+      - save_cache:
+          key: source-v1-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ".git"
   enable_extensions:
     steps:
       - run: pecl config-show
@@ -72,24 +87,14 @@ commands:
 jobs:
   bundle_packages:
     executor: php-81
-    steps:
-      - restore_cache:
-          keys:
-            - source-v1-{{ .Branch }}-{{ .Revision }}
-            - source-v1-{{ .Branch }}-
-            - source-v1-
-      - checkout
-      - save_cache:
-          key: source-v1-{{ .Branch }}-{{ .Revision }}
-          paths:
-            - ".git"
+      - checkout_code
       - install_composer
       - composer_validate
       - install_composer_packages
   unit_test:
     executor: php-81
     steps:
-      - checkout
+      - checkout_code
       - install_composer
       - install_composer_packages
       - enable_extensions
@@ -106,7 +111,7 @@ jobs:
   psalm:
     executor: php-81
     steps:
-      - checkout
+      - checkout_code
       - install_composer
       - install_composer_packages
       - create_reports_directory
@@ -124,7 +129,7 @@ jobs:
   mutation:
     executor: php-81
     steps:
-      - checkout
+      - checkout_code
       - install_composer
       - install_composer_packages
       - enable_extensions
@@ -137,7 +142,7 @@ jobs:
   static_analysis:
     executor: php-81
     steps:
-      - checkout
+      - checkout_code
       - install_composer
       - install_composer_packages
       - run:

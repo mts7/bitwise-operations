@@ -25,6 +25,7 @@ commands:
 
   install_composer_packages:
     steps:
+      - checkout
       - restore_cache:
           name: Restore Composer Package Cache
           keys:
@@ -37,6 +38,7 @@ commands:
           key: composer-v1-{{ checksum "composer.lock" }}
           paths:
             - ~/project/vendor
+            - ~/.composer/cache
   composer_validate:
     steps:
       - install_composer

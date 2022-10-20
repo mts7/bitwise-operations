@@ -79,7 +79,6 @@ commands:
             - ~/project/composer.lock
             - ~/.composer/cache
   init_jobs:
-    name: "Checkout code, install composer, and install composer packages."
     steps:
       - checkout_code
       - install_composer

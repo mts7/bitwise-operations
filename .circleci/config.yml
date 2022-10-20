@@ -48,7 +48,6 @@ commands:
 
   install_composer_packages:
     steps:
-      - checkout
       - restore_cache:
           name: Restore Composer Package Cache
           keys:
@@ -56,8 +55,7 @@ commands:
             - composer-v2-
       - php/install-packages:
           install-flags: --no-interaction --prefer-dist
-          cache-version: php-81-v2
-          cache-key: composer.json
+          with-cache: false
       - save_cache:
           name: Save Composer Package Cache
           key: composer-v2-{{ checksum "composer.json" }}

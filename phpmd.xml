@@ -27,6 +27,7 @@
                     \BitOps\Constants\Permissions,
                     \BitOps\Constants\UserStatus,
                     \BitOps\Helpers\Binary,
+                    \BitOps\Helpers\Bitwise,
                     \BitOps\Helpers\Convert,
                     \BitOps\Boolean
                 </value>

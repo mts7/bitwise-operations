@@ -24,7 +24,7 @@ class Binary
 
         $inputLength = strlen($input);
         for ($i = $inputLength - 1; $i >= 0; --$i) {
-            $flipped = 1 & ~ (int) $input[$i];
+            $flipped = Bitwise::flip((int) $input[$i]);
             $value[$i] = $flipped;
             if ($flipped === 1) {
                 break;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace BitOps;
 
+use BitOps\Helpers\Bitwise;
+
 /**
  * Boolean bitwise examples with loops
  */
@@ -44,18 +46,18 @@ class Boolean
     }
 
     /**
-     * Checks if the provided integer is odd.
+     * Checks if the provided integer is odd by having the 1 bit as set.
      */
     public static function isOdd(int $value): bool
     {
-        return ($value & 1) === 1;
+        return Bitwise::isSet($value, 1);
     }
 
     /**
-     * Checks if the provided integer is even.
+     * Checks if the provided integer is even by having the 1 bit as unset.
      */
     public static function isEven(int $value): bool
     {
-        return ($value & 1) === 0;
+        return Bitwise::isSet($value, 1) === false;
     }
 }

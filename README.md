@@ -16,6 +16,7 @@ directory.
 * [Odd or Even](#odd-or-even)
 * [Tracking Status](#tracking-status)
 * [Binary Clock](#binary-clock)
+* [Array Helper: implode](#array-helper-implode)
 
 ---
 
@@ -171,3 +172,13 @@ The fun part about the increment method is flipping a single bit using
 `1 & ~ $value` where `$value` is a string containing `1` or `0`.
 
 [Binary Clock example code](examples/binary-clock.php)
+
+---
+
+## Array Helper: implode
+
+Implode is a very useful PHP function. To make implode more useful, a
+reimplementation can accept options as bitwise flags to include `and ` before the
+final value and display the keys with the values.
+
+[implode example code](examples/implode-flags.php)

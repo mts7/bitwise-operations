@@ -94,7 +94,9 @@
                 logoutput="true"
                 passthru="true"
                 checkreturn="true"
-        />
+        >
+            <arg value="--no-cache"/>
+        </exec>
     </target>
 
     <target name="phpmd">

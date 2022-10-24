@@ -6,6 +6,7 @@ namespace BitOps;
 
 use BitOps\Constants\Permissions;
 use BitOps\Constants\UserStatus;
+use BitOps\Helpers\Bitwise;
 
 /**
  * Example class of how to interact with permissions at various bits.
@@ -25,15 +26,15 @@ class User
     /**
      * Adds a permission to the permission manager.
      */
-    final public function addPermission(int $permission): void
+    public function addPermission(int $permission): void
     {
         $this->permissions |= $permission;
     }
 
     /**
-     * Removes permissions from the permissions manager.
+     * Removes permissions from the permission manager.
      */
-    final public function removePermission(int $permission): void
+    public function removePermission(int $permission): void
     {
         $this->permissions ^= $permission;
     }
@@ -44,15 +45,15 @@ class User
      * Example: $user->checkPermission(Permissions::VIEW)
      * Example: $user->checkPermission(Permissions::ACTIVE | Permissions::CREATE)
      */
-    final public function checkPermission(int $permission): bool
+    public function checkPermission(int $permission): bool
     {
-        return ($this->permissions & $permission) === $permission;
+        return Bitwise::isSet($this->permissions, $permission);
     }
 
     /**
      * Gets the raw value of the permission manager.
      */
-    final public function getPermission(): int
+    public function getPermission(): int
     {
         return $this->permissions;
     }
@@ -62,7 +63,7 @@ class User
      *
      * @return string[]
      */
-    final public function getPermissions(): array
+    public function getPermissions(): array
     {
         $output = [];
         foreach (Permissions::getConstants() as $name => $value) {
@@ -77,7 +78,7 @@ class User
     /**
      * Gets the current status as an integer.
      */
-    final public function getStatus(): int
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -85,7 +86,7 @@ class User
     /**
      * Gets the status name of the constant for the current status value.
      */
-    final public function getStatusName(): string
+    public function getStatusName(): string
     {
         $constants = UserStatus::getConstants();
         $flipped = array_flip($constants);
@@ -96,7 +97,7 @@ class User
     /**
      * Sets the status to the provided value, if valid.
      */
-    final public function setStatus(int $status): void
+    public function setStatus(int $status): void
     {
         if (!(new UserStatus())->isValidConstant($status)) {
             $this->status = UserStatus::ANONYMOUS;
@@ -110,7 +111,7 @@ class User
     /**
      * Increases the user status by one increment.
      */
-    final public function increaseStatus(): void
+    public function increaseStatus(): void
     {
         $this->status <<= 1;
     }
@@ -118,7 +119,7 @@ class User
     /**
      * Decreases the user status by one increment.
      */
-    final public function decreaseStatus(): void
+    public function decreaseStatus(): void
     {
         $this->status >>= 1;
     }

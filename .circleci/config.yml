@@ -95,9 +95,9 @@ commands:
           command: composer update --dry-run roave/security-advisories
   check_composer_unused:
     steps:
-      -run:
-        name: Check for unused Composer dependencies
-        command: vendor/bin/composer-unused
+      - run:
+          name: Check for unused Composer dependencies
+          command: vendor/bin/composer-unused
 
 jobs:
   job-init:

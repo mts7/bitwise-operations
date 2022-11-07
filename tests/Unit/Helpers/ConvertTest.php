@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BitOps\Tests\Helpers;
+namespace BitOps\Tests\Unit\Helpers;
 
-use BitOps\Helpers\Convert;
+use BitOps\Helper\Convert;
 use PHPUnit\Framework\TestCase;
 
 /**

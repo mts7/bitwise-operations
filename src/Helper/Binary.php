@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitOps\Helpers;
+namespace BitOps\Helper;
 
 /**
  * Binary operations
@@ -23,9 +23,10 @@ class Binary
         $value = $input;
 
         $inputLength = strlen($input);
-        for ($i = $inputLength - 1; $i >= 0; --$i) {
-            $flipped = Bitwise::flip((int) $input[$i]);
-            $value[$i] = $flipped;
+        $iterator = new DecrementIntegerIterator($inputLength);
+        foreach ($iterator as $i) {
+            $flipped = Bitwise::flip((int) $input[$i - 1]);
+            $value[$i - 1] = $flipped;
             if ($flipped === 1) {
                 break;
             }

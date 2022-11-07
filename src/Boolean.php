@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BitOps;
 
-use BitOps\Helpers\Bitwise;
+use BitOps\Helper\Bitwise;
 
 /**
  * Boolean bitwise examples with loops

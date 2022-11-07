@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BitOps\Tests\Helpers;
+namespace BitOps\Tests\Unit\Helpers;
 
-use BitOps\Helpers\Bitwise;
+use BitOps\Helper\Bitwise;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -3,6 +3,7 @@
 <project name="Bitwise Operations" default="check">
     <target name="check" depends="
         composer-validate,
+        composer-unused,
         cs-fix,
         cs,
         test-configuration-validate,
@@ -23,6 +24,16 @@
         >
             <arg value="validate"/>
             <arg value="--ansi"/>
+        </exec>
+    </target>
+
+    <target name="composer-unused">
+        <exec
+                executable="vendor/bin/composer-unused"
+                logoutput="true"
+                passthru="true"
+                checkreturn="true"
+        >
         </exec>
     </target>
 
@@ -70,6 +81,7 @@
             <arg value="-d"/>
             <arg value="pcov.enabled=1"/>
             <arg value="vendor/bin/phpunit"/>
+            <arg value="--coverage-text"/>
             <arg value="--coverage-html=reports/code-coverage"/>
             <arg value="--coverage-xml=reports/coverage-xml"/>
             <arg value="--log-junit=reports/junit.xml"/>
@@ -131,13 +143,14 @@
                 passthru="true"
                 checkreturn="true"
         >
-            <arg value="-d" />
-            <arg value="memory_limit=-1" />
-            <arg value="vendor/bin/infection" />
-            <arg value="--threads=4" />
-            <arg value="--min-msi=100" />
-            <arg value="--min-covered-msi=100" />
-            <arg value="--coverage=reports" />
+            <arg value="-d"/>
+            <arg value="memory_limit=-1"/>
+            <arg value="vendor/bin/infection"/>
+            <arg value="--threads=4"/>
+            <arg value="--min-msi=100"/>
+            <arg value="--min-covered-msi=100"/>
+            <arg value="--coverage=reports"/>
+            <arg value="--skip-initial-tests"/>
         </exec>
     </target>
 </project>

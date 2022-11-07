@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BitOps\Tests\Helpers;
+namespace BitOps\Tests\Unit\Helpers;
 
-use BitOps\Helpers\ArrayHelper;
+use BitOps\Helper\ArrayHelper;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

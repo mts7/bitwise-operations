@@ -46,6 +46,11 @@ commands:
                 sudo pecl install pcov
             fi
             echo "extension=pcov.so" | sudo tee "$ini_dir/pcov.ini"
+
+            if [ ! -f "$pecl_dir/apcu.so" ]; then
+                echo yes | sudo pecl install apcu
+            fi
+            echo "extension=apcu.so" | sudo tee "$ini_dir/apcu.ini"
       - run:
           name: Copying pecl extensions to temp directory which will be cached
           command: sudo cp -R $(pecl config-show | grep ext_dir | awk -F ' ' '{print $(NF)}')/* pecl-cache/
@@ -83,8 +88,25 @@ commands:
       - checkout_code
       - install_composer
       - install_composer_packages
+  composer_package_security:
+    steps:
+      - run:
+          name: Check for Vulnerable Composer Packages
+          command: composer update --dry-run roave/security-advisories
+  check_composer_unused:
+    steps:
+      -run:
+        name: Check for unused Composer dependencies
+        command: vendor/bin/composer-unused
 
 jobs:
+  job-init:
+    executor: php-81
+    steps:
+      - init_jobs
+      - composer_package_security
+      - check_composer_unused
+      - enable_extensions
   test:
     executor: php-81
     steps:
@@ -108,7 +130,7 @@ jobs:
           name: Mutation Tests
           command: |
             mv ~/reports/junit.xml reports/coverage-xml/junit.xml
-            php -d memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100 --coverage=reports/coverage-xml
+            php -d memory_limit=-1 vendor/bin/infection --threads=4 --min-msi=100 --min-covered-msi=100 --coverage=reports/coverage-xml --skip-initial-tests
       - store_artifacts:
           path: reports/infection.html
           destination: infection.html
@@ -133,6 +155,9 @@ jobs:
     steps:
       - init_jobs
       - run:
+          name: Code Standards
+          command: vendor/bin/phpcs -n
+      - run:
           name: PHP Mess Detector
           command: vendor/bin/phpmd src,tests html phpmd.xml --reportfile ~/reports/phpmd.html
       - store_artifacts:
@@ -154,10 +179,13 @@ jobs:
 workflows:
   build:
     jobs:
-      - test
+      - job-init
+      - test:
+          requires:
+            - job-init
       - static_analysis:
           requires:
-            - test
+            - job-init
       - psalm:
           requires:
-            - test
+            - job-init

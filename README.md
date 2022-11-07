@@ -66,7 +66,7 @@ Not (`~`) is a complement. Flipping bits is done using both And and Not where on
 operand is the number of desired set bits to use and the other is the value to
 flip.
 
-[Flip a bit](src/Helpers/Binary.php#LC27)
+[Flip a bit](src/Helper/Binary.php#LC27)
 
 ```
 1 & ~0 == 1
@@ -105,14 +105,14 @@ operand.
 
 ## Flag Storage
 
-One example is of a User with Permissions. Each permission is stored as a class
-constant with a value that is a multiple of 2. Since bits are binary, their
-values can be either 0 (off) or 1 (on). With each permission at a different bit,
-the entire permissions management can be handled in a single integer. In this
-example, there are only 5 permissions, so a 32-bit integer is large enough to
-store the permissions.
+One usage for bitwise operations is of a User with Permissions. Each permission
+is stored as a class constant with a value that is a multiple of 2. Since bits
+are binary, their values can be either 0 (off) or 1 (on). With each permission
+at a different bit, the entire permissions management can be handled in a single
+integer. In this example, there are only 5 permissions, so a 32-bit integer is
+large enough to store the permissions.
 
-[Flag Storage example](examples/flag-storage.php)
+[Example Code](examples/flag-storage.php)
 
 ---
 
@@ -128,19 +128,21 @@ approach.
 This example shows how to use the `BitOps\Boolean` class for determining true
 values.
 
-[Boolean Loops example code](examples/boolean-loops.php)
+[Example Code](examples/boolean-loops.php)
 
 ---
 
 ## Odd or Even
 
-Checking for even can be done like `($value % 2) === 0`. Another way to do it, as
-`BitOps\Boolean` demonstrates, is with `($value & 1) === 0`. The differences
+Checking for even can be done like `($value % 2) === 0`. A faster way to do it,
+as `BitOps\Boolean` demonstrates, is with `($value & 1) === 0`. The differences
 include an operator change as well as an operand change. Since the last bit in a
 number is for `1`, all odd numbers will have the last bit on and all even
 numbers will have the last bit off.
 
-[Odd or Even example code](examples/odd-or-even.php)
+[Example Code](examples/odd-or-even.php)
+
+[Benchmark](https://github.com/mts7/Benchmarks/blob/master/benchmarks/is-even.php)
 
 ---
 
@@ -155,7 +157,7 @@ signing up. This status progression can be done by shifting the bit to the left.
 Since the user status has only a single value, this allows for quick and easy
 modification of the user status, as handled by the `User` class.
 
-[Tracking Status example code](examples/tracking-status.php)
+[Example Code](examples/tracking-status.php)
 
 ---
 
@@ -171,7 +173,7 @@ screen.
 The fun part about the increment method is flipping a single bit using
 `1 & ~ $value` where `$value` is a string containing `1` or `0`.
 
-[Binary Clock example code](examples/binary-clock.php)
+[Example Code](examples/binary-clock.php)
 
 ---
 
@@ -181,4 +183,4 @@ Implode is a very useful PHP function. To make implode more useful, a
 reimplementation can accept options as bitwise flags to include `and ` before the
 final value and display the keys with the values.
 
-[implode example code](examples/implode-flags.php)
+[Example Code](examples/implode-flags.php)

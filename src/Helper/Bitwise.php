@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitOps\Helpers;
+namespace BitOps\Helper;
 
 /**
  * Helpers including one or more bitwise operators.

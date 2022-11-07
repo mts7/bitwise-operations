@@ -6,7 +6,7 @@ namespace BitOps;
 
 use BitOps\Constants\Permissions;
 use BitOps\Constants\UserStatus;
-use BitOps\Helpers\Bitwise;
+use BitOps\Helper\Bitwise;
 
 /**
  * Example class of how to interact with permissions at various bits.

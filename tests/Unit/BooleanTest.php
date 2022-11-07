@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BitOps\Tests;
+namespace BitOps\Tests\Unit;
 
 use BitOps\Boolean;
 use PHPUnit\Framework\TestCase;

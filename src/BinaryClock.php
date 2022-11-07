@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BitOps;
 
-use BitOps\Helpers\Binary;
-use BitOps\Helpers\Convert;
+use BitOps\Helper\Binary;
+use BitOps\Helper\Convert;
 
 /**
  * A simple binary clock class.

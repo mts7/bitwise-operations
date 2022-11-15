@@ -13,6 +13,7 @@ commands:
   checkout_code:
     steps:
       - restore_cache:
+          name: Restoring source code cache
           keys:
             - source-v1-{{ .Branch }}-{{ .Revision }}
             - source-v1-{{ .Branch }}-
@@ -22,17 +23,19 @@ commands:
           name: git Garbage Collection
           command: git gc
       - save_cache:
+          name: Saving source code cache
           key: source-v1-{{ .Branch }}-{{ .Revision }}
           paths:
             - ".git"
   enable_extensions:
     steps:
-      - run: pecl config-show
-      - run: mkdir pecl-cache
+      - run:
+          name: Making a pecl-cache directory
+          command: mkdir pecl-cache
       - restore_cache:
-         keys:
-         - pecl-v2-{{ checksum "composer.json" }}
-         - pecl-v2-
+          name: Restoring PECL cache
+          keys:
+            - pecl-v2-{{ checksum "composer.json" }}
       - run:
           name: Copying restored pecl extensions cache into extensions directory
           command: sudo cp -R pecl-cache/. $(pecl config-show | grep ext_dir | awk -F ' ' '{print $(NF)}')
@@ -41,12 +44,10 @@ commands:
           command: |
             pecl_dir=$(pecl config-show | grep ext_dir | awk -F ' ' '{print $(NF)}')
             ini_dir=$(php --ini | grep "Scan for additional" | awk -F ': ' '{print $2}')
-
             if [ ! -f "$pecl_dir/pcov.so" ]; then
                 sudo pecl install pcov
             fi
             echo "extension=pcov.so" | sudo tee "$ini_dir/pcov.ini"
-
             if [ ! -f "$pecl_dir/apcu.so" ]; then
                 echo yes | sudo pecl install apcu
             fi
@@ -55,6 +56,7 @@ commands:
           name: Copying pecl extensions to temp directory which will be cached
           command: sudo cp -R $(pecl config-show | grep ext_dir | awk -F ' ' '{print $(NF)}')/* pecl-cache/
       - save_cache:
+          name: Saving PECL cache
           key: pecl-v2-{{ checksum "composer.json" }}
           paths:
             - pecl-cache
@@ -72,9 +74,8 @@ commands:
           name: Restore Composer Package Cache
           keys:
             - composer-v2-{{ checksum "composer.json" }}
-            - composer-v2-
       - php/install-packages:
-          install-flags: --no-interaction --prefer-dist
+          install-flags: --no-interaction --prefer-dist --optimize-autoloader --apcu-autoloader
           with-cache: false
       - save_cache:
           name: Save Composer Package Cache
@@ -154,6 +155,9 @@ jobs:
     executor: php-81
     steps:
       - init_jobs
+      - run:
+          name: Lint
+          command: vendor/bin/parallel-lint --exclude .git --exclude vendor --colors .
       - run:
           name: Code Standards
           command: vendor/bin/phpcs -n

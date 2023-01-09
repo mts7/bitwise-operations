@@ -8,7 +8,7 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",
-    "mts7/php-code-quality": "^0.1.3",
+    "mts7/php-code-quality": "^0.1.5",
     "roave/security-advisories": "dev-latest"
   },
   "autoload": {

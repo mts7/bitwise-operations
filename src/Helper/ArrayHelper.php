@@ -16,7 +16,7 @@ class ArrayHelper
     /**
      * Implodes an array to a string using the provided separator.
      *
-     * This is reimplements the built-in PHP function `implode`, yet it differs
+     * This reimplements the built-in PHP function `implode`, yet it differs
      * in that it can also add the word `and` before the last element and/or
      * include keys with the values by providing configuration options.
      *

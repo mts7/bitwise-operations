@@ -27,7 +27,7 @@ class BinaryClockTest extends TestCase
     /**
      * @dataProvider getTimeData
      *
-     * @param array<string,array<string,string>> $expected
+     * @param array<string,string> $expected
      */
     final public function testGetTime(string $initialTime, array $expected): void
     {

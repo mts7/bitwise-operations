@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <psalm
     errorLevel="1"
-    resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
@@ -11,7 +10,7 @@
     findUnusedVariablesAndParams="true"
     findUnusedCode="true"
     findUnusedPsalmSuppress="true"
-    phpVersion="8.1"
+    findUnusedBaselineEntry="true"
 >
     <projectFiles>
         <directory name="src" />
